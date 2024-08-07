@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "declaration": true,
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ESNext",
+    "types": [
+      "jest",
+      "jest-extended"
+    ]
+  }
+}

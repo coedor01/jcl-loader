@@ -1,0 +1,55 @@
+{
+  "name": "jcl-loader",
+  "version": "0.0.6",
+  "description": "解析jcl文件生成标准化ts对象",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "scripts": {
+    "dev": "father dev",
+    "test": "jest",
+    "build": "father build",
+    "build:deps": "father prebundle",
+    "prepublishOnly": "father doctor && npm run build"
+  },
+  "keywords": [],
+  "authors": [
+    "coedor01@gmail.com"
+  ],
+  "license": "MIT",
+  "files": [
+    "dist",
+    "compiled"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.21.0",
+    "@types/jest": "^29.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.54.1",
+    "@typescript-eslint/parser": "^5.54.1",
+    "eslint": "8.35.0",
+    "eslint-config-lvmcn": "0.0.59",
+    "eslint-formatter-pretty": "4.1.0",
+    "eslint-plugin-etc": "^2.0.2",
+    "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "6.1.1",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-unicorn": "^46.0.0",
+    "eslint-plugin-unused-imports": "2.0.0",
+    "father": "^4.1.6",
+    "jest": "^29.5.0",
+    "jest-extended": "^3.2.4",
+    "jx3box-api-sdk": "link:..\\jx3box-api-sdk",
+    "ts-jest": "^29.0.5",
+    "ts-node": "^10.9.1"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.25.0",
+    "lru-cache": "^11.0.0",
+    "luadata": "^1.0.2"
+  }
+}

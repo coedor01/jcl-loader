@@ -1,0 +1,249 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>jcl</title>
+</head>
+<body><h1 id='jcl文件数据结构解析'>.jcl文件数据结构解析</h1>
+<blockquote><p>本文档持续更新，当前版本更新时间：2024-08-02 15:27</p>
+</blockquote>
+<h2 id='行数据'>行数据</h2>
+<p>在.jcl文件中，每一行都是一条战斗日志，每一行的数据结构一致。</p>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>参数名称</th><th>类型</th><th>备注</th></tr></thead>
+<tbody><tr><td>crc</td><td>number</td><td>crc校验码（已废弃）</td></tr><tr><td>frame</td><td>number</td><td>事件发生的游戏帧数 (过图时可能为0)</td></tr><tr><td>ts</td><td>number</td><td>unix时间戳</td></tr><tr><td>delay</td><td>number</td><td>客户端从启动开始计算的毫秒数</td></tr><tr><td>eventType</td><td>number</td><td>事件类型枚举</td></tr><tr><td>luadataStr</td><td>string</td><td><a href='#lua事件'>Lua事件</a></td></tr></tbody>
+</table></figure>
+<h3 id='lua事件'>Lua事件</h3>
+<blockquote><p><strong>事件列表</strong>和<strong>参数列表</strong>中“是否已校对”是什么意思？</p>
+<ul>
+<li><p>事件列表中的“是否已校对”：</p>
+<ul>
+<li>✔️：保证参数的个数正确</li>
+<li>❌：不保证参数的个数正确</li>
+
+</ul>
+</li>
+<li><p>参数列表中的“是否已校对”：</p>
+<ul>
+<li>✔️：保证参数的意义正确</li>
+<li>❌：不保证参数的意义正确</li>
+
+</ul>
+</li>
+
+</ul>
+</blockquote>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>枚举值</th><th>事件名称</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>1</td><td>FightTime</td><td>✔️</td><td><a href='#战斗时间'>战斗时间</a></td></tr><tr><td>2</td><td>PlayerEnterScene</td><td>✔️</td><td><a href='#玩家进入场景'>玩家进入场景</a></td></tr><tr><td>3</td><td>PlayerLeavecene</td><td>✔️</td><td><a href='#玩家离开场景'>玩家离开场景</a></td></tr><tr><td>4</td><td>PlayerInfo</td><td>✔️</td><td><a href='#玩家信息数据'>玩家信息数据</a></td></tr><tr><td>5</td><td>PlayerFightHint</td><td>✔️</td><td><a href='#玩家战斗状态改变'>玩家战斗状态改变</a></td></tr><tr><td>6</td><td>NpcEnterScene</td><td>✔️</td><td><a href='#npc进入场景'>NPC进入场景</a></td></tr><tr><td>7</td><td>NpcLeavecene</td><td>✔️</td><td><a href='#npc离开场景'>NPC离开场景</a></td></tr><tr><td>8</td><td>NpcInfo</td><td>❌</td><td><a href='#npc信息数据'>NPC信息数据</a></td></tr><tr><td>9</td><td>NpcFightHint</td><td>✔️</td><td><a href='#npc战斗状态改变'>NPC战斗状态改变</a></td></tr><tr><td>10</td><td>DoodadEnterScene</td><td>✔️</td><td><a href='#交互物件进入场景'>交互物件进入场景</a></td></tr><tr><td>11</td><td>DoodadLeaveScene</td><td>✔️</td><td><a href='#交互物件离开场景'>交互物件离开场景</a></td></tr><tr><td>12</td><td>DoodadInfo</td><td>❌</td><td><a href='#交互物件信息数据'>交互物件信息数据</a></td></tr><tr><td>13</td><td>BuffUpdate</td><td>✔️</td><td><a href='#buff刷新'>BUFF刷新</a></td></tr><tr><td>14</td><td>PlayerSay</td><td>❌</td><td><a href='#角色喊话仅记录npc'>角色喊话（仅记录NPC）</a></td></tr><tr><td>15</td><td>OnWarningMessage</td><td>✔️</td><td><a href='#显示警告框'>显示警告框</a></td></tr><tr><td>16</td><td>PartyAddMember</td><td>❌</td><td><a href='#团队添加成员'>团队添加成员</a></td></tr><tr><td>17</td><td>PartySetMemberOnlineFlag</td><td>❌</td><td><a href='#团队成员在线状态改变'>团队成员在线状态改变</a></td></tr><tr><td>18</td><td>MsgSys</td><td>✔️</td><td><a href='#系统消息'>系统消息</a></td></tr><tr><td>19</td><td>SysMsgUiOmeSkillCastLog</td><td>✔️</td><td><a href='#技能施放日志'>技能施放日志</a></td></tr><tr><td>20</td><td>SysMsgUiOmeSkillCastRespondLog</td><td>✔️</td><td><a href='#技能施放结果日志'>技能施放结果日志</a></td></tr><tr><td>21</td><td>SysMsgUiOmeSkillEffectLog</td><td>✔️</td><td><a href='#技能最终产生的'>技能最终产生的效果（生命值的变化）</a></td></tr><tr><td>22</td><td>SysMsgUiOmeSkillBlockLog</td><td>✔️</td><td><a href='#格挡日志'>格挡日志</a></td></tr><tr><td>23</td><td>SysMsgUiOmeSkillShieldLog</td><td>✔️</td><td><a href='#技能被屏蔽日志'>技能被屏蔽日志</a></td></tr><tr><td>24</td><td>SysMsgUiOmeSkillMissLog</td><td>✔️</td><td><a href='#技能未命中目标日志'>技能未命中目标日志</a></td></tr><tr><td>25</td><td>SysMsgUiOmeSkillHitLog</td><td>✔️</td><td><a href='#技能命中目标日志'>技能命中目标日志</a></td></tr><tr><td>26</td><td>SysMsgUiOmeSkillDodgeLog</td><td>✔️</td><td><a href='#技能被闪避日志'>技能被闪避日志</a></td></tr><tr><td>27</td><td>SysMsgUiOmeCommonHealthLog</td><td>✔️</td><td><a href='#普通治疗日志'>普通治疗日志</a></td></tr><tr><td>28</td><td>SysMsgUiOmeDeathNotify</td><td>✔️</td><td><a href='#死亡日志'>死亡日志</a></td></tr><tr><td>29</td><td>TargetLocation</td><td>❌</td><td><a href='#目标坐标信息'>目标坐标信息</a></td></tr></tbody>
+</table></figure>
+<h4 id='战斗时间'>战斗时间</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>bFighting</td><td>number</td><td>✔️</td><td>战斗开始还是结束</td></tr><tr><td>1</td><td>szUUID</td><td>number</td><td>✔️</td><td><a href='#jcl记录者的角色信息'>Jcl记录者的角色信息</a></td></tr><tr><td>2</td><td>nDuring</td><td>number</td><td>✔️</td><td><a href='#战斗持续时间'>战斗持续时间</a></td></tr><tr><td>3</td><td>dwMapID</td><td>number</td><td>✔️</td><td><a href='#战斗所在的地图id'>战斗所在的地图ID</a></td></tr></tbody>
+</table></figure>
+<h5 id='jcl记录者的角色信息'>Jcl记录者的角色信息</h5>
+<p>格式为 &quot;客户端::大区_服务器::当前时间戳::(未知)::(未知)::(未知)&quot;</p>
+<h5 id='战斗持续时间'>战斗持续时间</h5>
+<p>开始时间固定为0</p>
+<h5 id='战斗所在的地图id'>战斗所在的地图ID</h5>
+<p>对应关系见 <a href='https://data.jx3box.com/map/data/map_index.json'>魔盒数据库</a></p>
+<h4 id='玩家进入场景'>玩家进入场景</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>✔️</td><td>玩家ID</td></tr></tbody>
+</table></figure>
+<h4 id='玩家离开场景'>玩家离开场景</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>✔️</td><td>玩家ID</td></tr></tbody>
+</table></figure>
+<h4 id='玩家信息数据'>玩家信息数据</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>✔️</td><td>玩家ID</td></tr><tr><td>1</td><td>szName</td><td>string</td><td>✔️</td><td>玩家名称</td></tr><tr><td>2</td><td>dwForceID</td><td>number</td><td>✔️</td><td><a href='#玩家势力id'>玩家势力ID</a></td></tr><tr><td>3</td><td>dwMountKungfuID</td><td>number</td><td>✔️</td><td>玩家心法ID</td></tr><tr><td>4</td><td>nEquipScore</td><td>number</td><td>✔️</td><td>玩家装分</td></tr><tr><td>5</td><td>aEquip</td><td>object</td><td>✔️</td><td>玩家装备列表</td></tr><tr><td>6</td><td>aTalent</td><td>object</td><td>✔️</td><td>玩家奇穴列表</td></tr><tr><td>7</td><td>szGUID</td><td>number</td><td>✔️</td><td><a href='#玩家guid'>玩家GUID</a></td></tr><tr><td>8</td><td>_</td><td>object | null</td><td>❌</td><td>未知</td></tr></tbody>
+</table></figure>
+<h5 id='玩家势力id'>玩家势力ID</h5>
+<p>在游戏里门派是有ID的，门派也会对应势力，势力也有势力ID。大多数地方用势力ID表示玩家所在的门派，具体映射关系见 <a href='https://github.com/JX3BOX/jx3box-data/blob/master/data/xf/xf.json'>魔盒数据库</a></p>
+<h5 id='玩家guid'>玩家GUID</h5>
+<p>不同于玩家ID，GUI可以在所有服务器中，唯一标注一名玩家</p>
+<h4 id='玩家战斗状态改变'>玩家战斗状态改变</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>✔️</td><td>玩家ID</td></tr><tr><td>1</td><td>bFight</td><td>boolean</td><td>✔️</td><td>是否战斗中</td></tr><tr><td>2</td><td>fCurrentLife</td><td>number</td><td>✔️</td><td>当前生命值</td></tr><tr><td>3</td><td>fMaxLife</td><td>number</td><td>✔️</td><td>最大生命值</td></tr><tr><td>4</td><td>nCurrentMana</td><td>number</td><td>✔️</td><td>当前蓝量</td></tr><tr><td>5</td><td>nMaxMana</td><td>number</td><td>✔️</td><td>最大蓝量</td></tr></tbody>
+</table></figure>
+<h4 id='npc进入场景'>NPC进入场景</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>✔️</td><td><a href='#npc实体id'>NPC实体ID</a></td></tr></tbody>
+</table></figure>
+<h5 id='npc实体id'>NPC实体ID</h5>
+<p>在游戏内体现为一个1开头的，比玩家ID长很多的数。与之对应的是NPC模板ID，可以简单理解成类和实例的关系</p>
+<h4 id='npc离开场景'>NPC离开场景</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>✔️</td><td><a href='#npc实体id'>NPC实体ID</a></td></tr></tbody>
+</table></figure>
+<h4 id='npc信息数据'>NPC信息数据</h4>
+<p>真实数据有8个元素，文档只有7个元素，无法对应</p>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>❌</td><td>NPC ID</td></tr><tr><td>1</td><td>szName</td><td>string</td><td>❌</td><td>NPC名称</td></tr><tr><td>2</td><td>dwTemplateID</td><td>number</td><td>❌</td><td>模板ID</td></tr><tr><td>3</td><td>dwEmployer</td><td>number</td><td>❌</td><td><a href='#npc所属的玩家id'>NPC所属的玩家ID</a></td></tr><tr><td>4</td><td>nX</td><td>number</td><td>❌</td><td>NPC的 X 坐标</td></tr><tr><td>5</td><td>nY</td><td>number</td><td>❌</td><td>NPC的 Y 坐标</td></tr><tr><td>6</td><td>nZ</td><td>number</td><td>❌</td><td>NPC的 Z 坐标</td></tr></tbody>
+</table></figure>
+<h5 id='npc所属的玩家id'>NPC所属的玩家ID</h5>
+<p>比如毒经的蛇，这个字段会指向毒经的玩家ID</p>
+<h4 id='npc战斗状态改变'>NPC战斗状态改变</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>✔️</td><td>NPC实体ID</td></tr><tr><td>1</td><td>bFight</td><td>boolean</td><td>✔️</td><td>是否战斗中</td></tr><tr><td>2</td><td>fCurrentLife</td><td>number</td><td>✔️</td><td>当前生命值</td></tr><tr><td>3</td><td>fMaxLife</td><td>number</td><td>✔️</td><td>最大生命值</td></tr><tr><td>4</td><td>nCurrentMana</td><td>number</td><td>✔️</td><td>当前蓝量</td></tr><tr><td>5</td><td>nMaxMana</td><td>number</td><td>✔️</td><td>最大蓝量</td></tr></tbody>
+</table></figure>
+<h4 id='交互物件进入场景'>交互物件进入场景</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>✔️</td><td>交互物件ID</td></tr></tbody>
+</table></figure>
+<h4 id='交互物件离开场景'>交互物件离开场景</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>✔️</td><td>交互物件ID</td></tr></tbody>
+</table></figure>
+<h4 id='交互物件信息数据'>交互物件信息数据</h4>
+<p>真实数据有6个字段，比文档多了1个</p>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwID</td><td>number</td><td>❌</td><td>交互物件ID</td></tr><tr><td>1</td><td>dwTemplateID</td><td>number</td><td>❌</td><td><a href='#交互物件模板id'>交互物件模板ID</a></td></tr><tr><td>2</td><td>nX</td><td>number</td><td>❌</td><td>交互物件 X 坐标</td></tr><tr><td>3</td><td>nY</td><td>number</td><td>❌</td><td>交互物件 Y 坐标</td></tr><tr><td>4</td><td>nZ</td><td>number</td><td>❌</td><td>交互物件 Z 坐标</td></tr></tbody>
+</table></figure>
+<h5 id='交互物件模板id'>交互物件模板ID</h5>
+<p>跟NPC是一样的，可以查询 <a href='https://www.jx3box.com/app/database?type=doodad'>魔盒数据库</a></p>
+<h4 id='buff刷新'>BUFF刷新</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwPlayerID</td><td>number</td><td>✔️</td><td>获得者ID</td></tr><tr><td>1</td><td>bDelete</td><td>boolean</td><td>✔️</td><td>是获得BUFF还是失去BUFF</td></tr><tr><td>2</td><td>nIndex</td><td>number</td><td>✔️</td><td>无规律的数字</td></tr><tr><td>3</td><td>bCanCancel</td><td>boolean</td><td>✔️</td><td>是否是可以右键点掉的BUFF</td></tr><tr><td>4</td><td>dwBuffID</td><td>number</td><td>✔️</td><td>BUFF ID</td></tr><tr><td>5</td><td>nStackNum</td><td>number</td><td>✔️</td><td>BUFF 层数</td></tr><tr><td>6</td><td>nEndFrame</td><td>number</td><td>✔️</td><td>BUFF 正常情况下的结束时间</td></tr><tr><td>7</td><td>bInit</td><td>boolean</td><td>❌</td><td>未知</td></tr><tr><td>8</td><td>nLevel</td><td>number</td><td>✔️</td><td>BUFF 等级</td></tr><tr><td>9</td><td>dwSkillSrcID</td><td>number</td><td>✔️</td><td><a href='#buff-来源id'>BUFF 来源ID</a></td></tr><tr><td>10</td><td>bIsValid</td><td>boolean</td><td>❌</td><td>未知</td></tr></tbody>
+</table></figure>
+<h5 id='buff-来源id'>BUFF 来源ID</h5>
+<p>谁给我上的BUFF</p>
+<h4 id='角色喊话仅记录npc'>角色喊话（仅记录NPC）</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>szText</td><td>string</td><td>❌</td><td>喊话内容</td></tr><tr><td>1</td><td>dwTalkerID</td><td>number</td><td>❌</td><td>角色ID</td></tr><tr><td>2</td><td>nChannel</td><td>string</td><td>❌</td><td>频道</td></tr><tr><td>3</td><td>szName</td><td>string</td><td>❌</td><td>角色名称</td></tr></tbody>
+</table></figure>
+<h4 id='显示警告框'>显示警告框</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>szWarningType</td><td>string</td><td>✔️</td><td>Warning类型</td></tr><tr><td>1</td><td>szText</td><td>string</td><td>✔️</td><td>Warning内容</td></tr></tbody>
+</table></figure>
+<h4 id='团队添加成员'>团队添加成员</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwTeamID</td><td>number</td><td>❌</td><td>团队ID</td></tr><tr><td>1</td><td>dwMemberID</td><td>number</td><td>❌</td><td>成员ID</td></tr><tr><td>2</td><td>nGroupIndex</td><td>number</td><td>❌</td><td>成员的团队内部编号</td></tr></tbody>
+</table></figure>
+<h4 id='团队成员在线状态改变'>团队成员在线状态改变</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwTeamID</td><td>number</td><td>❌</td><td>团队ID</td></tr><tr><td>1</td><td>dwMemberID</td><td>number</td><td>❌</td><td>成员ID</td></tr><tr><td>2</td><td>nOnlineFlag</td><td>number</td><td>❌</td><td>在线状态标识</td></tr></tbody>
+</table></figure>
+<h4 id='系统消息'>系统消息</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>szText</td><td>string</td><td>✔️</td><td>Msg内容</td></tr><tr><td>1</td><td>szChannel</td><td>string</td><td>✔️</td><td>Msg频道</td></tr></tbody>
+</table></figure>
+<h4 id='技能施放日志'>技能施放日志</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwCaster</td><td>number</td><td>✔️</td><td>技能施放者</td></tr><tr><td>1</td><td>dwSkillID</td><td>number</td><td>✔️</td><td>技能ID</td></tr><tr><td>2</td><td>dwLevel</td><td>number</td><td>✔️</td><td>技能等级</td></tr></tbody>
+</table></figure>
+<h4 id='技能施放结果日志'>技能施放结果日志</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwCaster</td><td>number</td><td>✔️</td><td>技能施放者</td></tr><tr><td>1</td><td>dwSkillID</td><td>number</td><td>✔️</td><td>技能ID</td></tr><tr><td>2</td><td>dwLevel</td><td>number</td><td>✔️</td><td>技能等级</td></tr><tr><td>3</td><td>nRespond</td><td>number</td><td>❌</td><td>未知</td></tr></tbody>
+</table></figure>
+<h4 id='技能最终产生的效果生命值的变化'>技能最终产生的效果（生命值的变化）</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwCaster</td><td>number</td><td>✔️</td><td>施放者</td></tr><tr><td>1</td><td>dwTarget</td><td>number</td><td>✔️</td><td>目标</td></tr><tr><td>2</td><td>bReact</td><td>number</td><td>✔️</td><td>是否为反击</td></tr><tr><td>3</td><td>nType</td><td>number</td><td>✔️</td><td>Effect类型</td></tr><tr><td>4</td><td>dwID</td><td>number</td><td>✔️</td><td>Effect的ID</td></tr><tr><td>5</td><td>dwLevel</td><td>number</td><td>✔️</td><td>Effect的等级</td></tr><tr><td>6</td><td>bCriticalStrike</td><td>boolean</td><td>✔️</td><td>是否会心</td></tr><tr><td>7</td><td>nCount</td><td>number</td><td>✔️</td><td>tResultCount数据表中元素个数</td></tr><tr><td>8</td><td>tResultCount</td><td>object</td><td>✔️</td><td>数值集合</td></tr></tbody>
+</table></figure>
+<h4 id='格挡日志'>格挡日志</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwCaster</td><td>number</td><td>✔️</td><td>施放者</td></tr><tr><td>1</td><td>dwTarget</td><td>number</td><td>✔️</td><td>目标</td></tr><tr><td>2</td><td>nType</td><td>number</td><td>✔️</td><td>Effect的类型</td></tr><tr><td>3</td><td>dwID</td><td>number</td><td>✔️</td><td>Effect的ID</td></tr><tr><td>4</td><td>dwLevel</td><td>number</td><td>✔️</td><td>Effect的等级</td></tr><tr><td>5</td><td>nDamageType</td><td>number</td><td>✔️</td><td>伤害类型</td></tr></tbody>
+</table></figure>
+<h4 id='技能被屏蔽日志'>技能被屏蔽日志</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwCaster</td><td>number</td><td>✔️</td><td>施放者</td></tr><tr><td>1</td><td>dwTarget</td><td>number</td><td>✔️</td><td>目标</td></tr><tr><td>2</td><td>nType</td><td>number</td><td>✔️</td><td>Effect的类型</td></tr><tr><td>3</td><td>dwID</td><td>number</td><td>✔️</td><td>Effect的ID</td></tr><tr><td>4</td><td>dwLevel</td><td>number</td><td>✔️</td><td>Effect的等级</td></tr></tbody>
+</table></figure>
+<h4 id='技能未命中目标日志'>技能未命中目标日志</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwCaster</td><td>number</td><td>✔️</td><td>施放者</td></tr><tr><td>1</td><td>dwTarget</td><td>number</td><td>✔️</td><td>目标</td></tr><tr><td>2</td><td>nType</td><td>number</td><td>✔️</td><td>Effect的类型</td></tr><tr><td>3</td><td>dwID</td><td>number</td><td>✔️</td><td>Effect的ID</td></tr><tr><td>4</td><td>dwLevel</td><td>number</td><td>✔️</td><td>Effect的等级</td></tr></tbody>
+</table></figure>
+<h4 id='技能命中目标日志'>技能命中目标日志</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwCaster</td><td>number</td><td>✔️</td><td>施放者</td></tr><tr><td>1</td><td>dwTarget</td><td>number</td><td>✔️</td><td>目标</td></tr><tr><td>2</td><td>nType</td><td>number</td><td>✔️</td><td>Effect的类型</td></tr><tr><td>3</td><td>dwID</td><td>number</td><td>✔️</td><td>Effect的ID</td></tr><tr><td>4</td><td>dwLevel</td><td>number</td><td>✔️</td><td>Effect的等级</td></tr></tbody>
+</table></figure>
+<h4 id='技能被闪避日志'>技能被闪避日志</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwCaster</td><td>number</td><td>✔️</td><td>施放者</td></tr><tr><td>1</td><td>dwTarget</td><td>number</td><td>✔️</td><td>目标</td></tr><tr><td>2</td><td>nType</td><td>number</td><td>✔️</td><td>Effect的类型</td></tr><tr><td>3</td><td>dwID</td><td>number</td><td>✔️</td><td>Effect的ID</td></tr><tr><td>4</td><td>dwLevel</td><td>number</td><td>✔️</td><td>Effect的等级</td></tr></tbody>
+</table></figure>
+<h4 id='普通治疗日志'>普通治疗日志</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwCharacterID</td><td>number</td><td>✔️</td><td>承疗玩家ID</td></tr><tr><td>1</td><td>nDeltaLife</td><td>number</td><td>✔️</td><td>增加血量值</td></tr></tbody>
+</table></figure>
+<h4 id='死亡日志'>死亡日志</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwCharacterID</td><td>number</td><td>✔️</td><td>死亡目标ID</td></tr><tr><td>1</td><td>dwKiller</td><td>number</td><td>✔️</td><td>击杀者ID</td></tr></tbody>
+</table></figure>
+<h4 id='目标坐标信息'>目标坐标信息</h4>
+<figure class='table-figure'><table>
+<thead>
+<tr><th>索引</th><th>参数名称</th><th>类型</th><th>是否已校对</th><th>备注</th></tr></thead>
+<tbody><tr><td>0</td><td>dwType</td><td>number</td><td>❌</td><td>目标类型</td></tr><tr><td>1</td><td>dwID</td><td>number</td><td>❌</td><td>目标ID</td></tr><tr><td>2</td><td>nX</td><td>number</td><td>❌</td><td>目标ID</td></tr><tr><td>3</td><td>nY</td><td>number</td><td>❌</td><td>目标 Y 坐标</td></tr><tr><td>4</td><td>nZ</td><td>number</td><td>❌</td><td>目标 Z 坐标</td></tr></tbody>
+</table></figure>
+<h2 id='鸣谢'>鸣谢</h2>
+<p>感谢下列文档作者和老师对我整理这份文档提供的帮助：</p>
+<ul>
+<li><a href='[茶馆 » 魔盒（JX3BOX） - 一站式剑网3资源工具站](https://www.jx3box.com/community/576?page=1&amp;onlyAuthor=false)'>《jcl数据格式整理》</a></li>
+<li><a href='https://www.jx3box.com/tool/46269'>《【战斗分析】茗伊战斗日志(JCL)数据说明文档》</a></li>
+<li>魔盒签约作者：不咕</li>
+
+</ul>
+<h2 id='关于'>关于</h2>
+<p>该文档目的是为了统一.jcl文件在TypeScript中的标准输出，让开发者可以直接使用标准输出，而无需考虑.jcl文件本身的读取与解析，方便前端数据分析项目对jcl数据的使用。后续会基于该文档内容进行二次封装，让jcl数据变得更加易用。</p>
+<h2 id='相关'>相关</h2>
+<p><a href='https://npmjs.com/package/jcl-loader'><img src="https://img.shields.io/npm/v/jcl-loader.svg?style=flat" referrerpolicy="no-referrer" alt="NPM version"></a></p>
+</body>
+</html>
