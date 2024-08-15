@@ -1,42 +1,8 @@
 import * as luadata from 'luadata';
-import { EventType, LuaDataType, JCL, Game } from "./typed";
+import { EventType, JCL } from "../typed";
 import { LRUCache } from 'lru-cache';
-import { UnsupportEventTypeError } from './errors';
-import { getTalentsMap, getXFsMap } from "jx3box-api-sdk/dist/esm";
-import { XinFa } from 'jx3box-api-sdk/dist/esm/xf/typed';
-import { Talent } from 'jx3box-api-sdk/dist/esm/skill/typed';
+import { UnsupportEventTypeError } from '../errors';
 
-
-function loadRawLine(raw_line: string): JCL.RawLine {
-  const [
-    crc,
-    frame,
-    ts,
-    delay,
-    eventType,
-    luadataStr,
-  ] = raw_line.split("\t");
-  const rawLine: JCL.RawLine = {
-    crc: Number(crc),
-    frame: Number(frame),
-    ts: Number(ts),
-    delay: Number(delay),
-    eventType: Number(eventType),
-    luadataStr: luadataStr,
-  };
-  return rawLine;
-};
-
-export function loadRaw(raw: string): Array<JCL.RawLine> {
-  const rawTextLines: Array<string> = raw.split("\n");
-
-  const result: Array<JCL.RawLine> = [];
-  for (const rawTextLine of rawTextLines) {
-    const rawLine: JCL.RawLine = loadRawLine(rawTextLine);
-    result.push(rawLine);
-  }
-  return result;
-};
 
 function parseLuadata(eventType: EventType, luadataStr: string) {
 
@@ -73,15 +39,16 @@ function parseLuadata(eventType: EventType, luadataStr: string) {
         dwMountKungfuID: luaData[3],
         nEquipScore: luaData[4],
         aEquip: luaData[5],
-        aTalent: luaData[6].map(
-          //@ts-ignore
-          value => ({
-            seq: value[0],
-            skillId: value[1],
-            level: value[2],
-          })
-        ),
-        szGUID: luaData[7],
+        aTalent: luaData.length >= 7
+          ? luaData[6].map(
+            //@ts-ignore
+            value => ({
+              seq: value[0],
+              skillId: value[1],
+              level: value[2],
+            })
+          ) : null,
+        szGUID: luaData.length >= 8 ? luaData[7] : null,
         _: luaData.length >= 9 ? luaData[8] : null,
       };
       break;
@@ -244,7 +211,6 @@ function parseLuadata(eventType: EventType, luadataStr: string) {
   return data;
 }
 
-
 type parserFnType = <T>(eventType: EventType) => Array<JCL.Line<T>>
 
 export function createParser(rawLines: Array<JCL.RawLine>): parserFnType {
@@ -301,43 +267,4 @@ export function createParserWithLruCache(rawLines: Array<JCL.RawLine>, max: numb
   }
 
   return filterWithLruCache;
-}
-
-
-export async function getGameBasePlayers(parser: parserFnType): Promise<Array<Game.BasePlayer>> {
-  const aPlayInfoLine: Array<JCL.Line<LuaDataType.PlayerInfo>> = parser(EventType.PlayerInfo);
-  const faPlayInfoLine: Array<JCL.Line<LuaDataType.PlayerInfo>> = aPlayInfoLine
-    .filter((item) => (item.luadata._ !== null));
-  console.log(faPlayInfoLine[0].luadata.aTalent);
-
-  const xfids: Set<number> = new Set();
-  const skillIds: Set<number> = new Set();
-  for (let item of faPlayInfoLine) {
-    xfids.add(item.luadata.dwMountKungfuID);
-    for (let talent of item.luadata.aTalent) {
-      skillIds.add(talent.skillId);
-    }
-  }
-  const xfsMap: Map<number, XinFa> = getXFsMap(Array.from(xfids));
-  const skillsMap: Map<number, Talent> = await getTalentsMap(Array.from(skillIds));
-
-  //@ts-ignore
-  const aBasePlayer: Array<Game.BasePlayer> = (
-    faPlayInfoLine
-      .map(
-        (item) => (
-          {
-            "id": item.luadata.szGUID,
-            "name": item.luadata.szName,
-            "xf": xfsMap.get(item.luadata.dwMountKungfuID),
-            "nEquipScore": item.luadata.nEquipScore,
-            "aTalent": item.luadata.aTalent.map(
-              value => (skillsMap.get(value.skillId))
-            )
-          }
-        )
-      )
-  );
-
-  return aBasePlayer;
 }

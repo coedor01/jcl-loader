@@ -75,9 +75,6 @@ importers:
       jest-extended:
         specifier: ^3.2.4
         version: 3.2.4(jest@29.7.0(@types/node@22.0.0)(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.3.3)))
-      jx3box-api-sdk:
-        specifier: link:..\jx3box-api-sdk
-        version: link:../jx3box-api-sdk
       ts-jest:
         specifier: ^29.0.5
         version: 29.2.3(@babel/core@7.25.2)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.25.2))(jest@29.7.0(@types/node@22.0.0)(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.3.3)))(typescript@5.3.3)

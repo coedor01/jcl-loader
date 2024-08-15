@@ -1,6 +1,3 @@
-import { Talent } from "jx3box-api-sdk/dist/esm/skill/typed";
-import { XinFa } from "jx3box-api-sdk/dist/esm/xf/typed";
-
 export namespace JCL {
   /**
   * Params:
@@ -580,25 +577,3 @@ export namespace LuaDataType {
   // };
 
 };
-
-
-export namespace Game {
-
-  /**
- * Name             玩家基础信息
- * Params:
- * @name            玩家名称
- * @dwMountKungfu   玩家心法
- * @nEquipScore     玩家装分
- * @aEquip          玩家装备列表
- * @aTalent         玩家奇穴列表
- */
-  export interface BasePlayer {
-    id: number,
-    name: string;
-    xf: XinFa;
-    nEquipScore: number;
-    // aEquip: Array<Equip>;
-    aTalent: Array<Talent>;
-  };
-}
