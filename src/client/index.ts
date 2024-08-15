@@ -1,14 +1,14 @@
 import { loadRaw, parserFnType, createParserWithLruCache, createParser } from "./core";
 import { JCL, EventType, LuaDataType } from "./typed";
 
-class Loader {
+class Parser {
   readonly parser: parserFnType;
 
   constructor(parser: parserFnType) {
     this.parser = parser
   }
 
-  static fromText(data: string, use_cache: boolean = true): Loader {
+  static fromText(data: string, use_cache: boolean = true): Parser {
     const rawLines: Array<JCL.RawLine> = loadRaw(data);
     const enumCount = Object.keys(EventType).filter(key => isNaN(Number(key))).length;
     let parser: parserFnType;
@@ -17,7 +17,7 @@ class Loader {
     } else {
       parser = createParser(rawLines)
     }
-    return new Loader(parser);
+    return new Parser(parser);
   }
 
   getPlayerEnterScene(): Array<
@@ -220,4 +220,4 @@ class Loader {
 
 }
 
-export default Loader;
+export default Parser;

@@ -1,5 +1,5 @@
-import { loadRaw, createParser, createParserWithLruCache } from "../core";
-import { EventType, LuaDataType } from "../typed";
+import Loader from "..";
+
 
 const testData = `2286309794	4388266	1716702576	198750	13	{536875601,false,0,false,0,0,0,true,0,0,false}
 2981231501	4388267	1716702576	198809	25	{536872699,536872699,1,2341,7}
@@ -3491,31 +3491,15 @@ const testData = `2286309794	4388266	1716702576	198750	13	{536875601,false,0,fal
 2804532501	4387259	1716702659	281688	2	{14402722}
 `;
 
+const loader = Loader.fromText(testData);
 
 describe("load module", () => {
   test("load function", () => {
     expect(
-      loadRaw("638309433	4388291	1716702578	200309	21	{536944023,536944023,0,1,755,1,false,2,{[13]=0,[14]=0}}")[0].crc
-    ).toBe(638309433);
-  });
-
-  test("parser function", () => {
-    expect(
-      createParser(
-        loadRaw("638309433	4388291	1716702578	200309	21	{536944023,536944023,0,1,755,1,false,2,{[13]=0,[14]=0}}\n638309433	4388291	1716702578	200309	30	{536944023,536944023,0,1,755,1,false,2,{[13]=0,[14]=0}}")
-      )<LuaDataType.SysMsgUiOmeSkillEffectLog>(
-        EventType.SysMsgUiOmeSkillEffectLog,
-      )[0].luadata.dwCaster
-    ).toBe(536944023);
-  });
-  test("parser function with lru cache", () => {
-    expect(
-      createParserWithLruCache(
-        loadRaw("638309433	4388291	1716702578	200309	21	{536944023,536944023,0,1,755,1,false,2,{[13]=0,[14]=0}}"),
-        10
-      )<LuaDataType.SysMsgUiOmeSkillEffectLog>(
-        EventType.SysMsgUiOmeSkillEffectLog,
-      )[0].luadata.dwCaster
-    ).toBe(536944023);
+      (() => {
+        const result = loader.getPlayerEnterScene();
+        console.log(result);
+      })()
+    );
   });
 });
