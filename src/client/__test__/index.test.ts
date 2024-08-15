@@ -3498,7 +3498,6 @@ describe("load module", () => {
     expect(
       (() => {
         const result = parser.getPlayerEnterScene();
-        console.log(result);
       })()
     );
   });

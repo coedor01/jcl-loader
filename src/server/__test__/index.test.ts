@@ -3497,8 +3497,7 @@ describe("load module", () => {
   test("load function", () => {
     expect(
       (() => {
-        const result = loader.getPlayerEnterScene();
-        console.log(result);
+        const result = loader.getBuffUpdate();
       })()
     );
   });

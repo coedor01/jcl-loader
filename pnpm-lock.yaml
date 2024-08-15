@@ -69,6 +69,9 @@ importers:
       father:
         specifier: ^4.1.6
         version: 4.4.5(@babel/core@7.25.2)(@types/node@22.0.0)(styled-components@6.1.12(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(type-fest@0.21.3)(webpack@5.93.0)
+      jcl-loader:
+        specifier: 'link:'
+        version: 'link:'
       jest:
         specifier: ^29.5.0
         version: 29.7.0(@types/node@22.0.0)(ts-node@10.9.2(@types/node@22.0.0)(typescript@5.3.3))
